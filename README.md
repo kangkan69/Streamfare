@@ -11,6 +11,7 @@
 
 **Paste a link. Add the headers it needs. Watch.**
 
+[Live demo](https://streamfare.vercel.app/) ·
 [Quick start](#-quick-start) ·
 [Features](#-features) ·
 [How it works](#-how-it-works) ·
@@ -34,9 +35,28 @@
 | 🪟 **Glass UI** | Smooth animations built to stay fluid on 120 and 144 Hz screens |
 | 💾 **Remembers you** | Last link and headers are saved in your browser only |
 
+## 🌐 Live demo or run it yourself
+
+The demo at **[streamfare.vercel.app](https://streamfare.vercel.app/)** is the player on its own.
+Anything that needs the proxy only works when you run Streamfare on your own computer.
+
+| | Live demo | Run locally |
+|---|:---:|:---:|
+| Player, quality, volume, picture controls, themes | ✅ | ✅ |
+| Open streams that allow browser playback | ✅ | ✅ |
+| Referer, Origin, User-Agent, Cookie headers | ❌ | ✅ |
+| `url\|Referer=...` links | ❌ | ✅ |
+| Streams that block browsers (CORS) | ❌ | ✅ |
+
+> [!NOTE]
+> The proxy is not part of the hosted demo. Hosts like Vercel run short serverless
+> functions instead of a long-running server, so `server.js` cannot stream video there.
+> It would also become an open proxy that anyone on the internet could use.
+
 ## 🚀 Quick start
 
-You need [Node.js](https://nodejs.org) 18 or newer. There is nothing to install.
+To use custom headers, run it on your own computer. You need [Node.js](https://nodejs.org)
+18 or newer. There is nothing to install.
 
 ```bash
 git clone https://github.com/YOUR-USERNAME/streamfare.git
@@ -144,7 +164,7 @@ Most changes are one small edit. Everything below lives in `public/css/style.css
 - Use it only with streams you have the right to watch.
 - DRM-protected streams (Widevine and similar) are not supported, and it does not bypass any protection.
 - Tokenized links expire. A dead link needs a new one.
-- The proxy is meant for **your own computer**. Do not expose it to the internet, because it will fetch any address it is given.
+- The proxy is meant for **your own computer**. Do not host it publicly, because it fetches any address it is given and anyone could use it.
 
 <div align="center">
 

@@ -97,9 +97,31 @@ video.addEventListener('error', () => {
   setStatus('error', 'Error: playback failed. Check the URL and headers, or toggle the proxy.');
 });
 
+// ---------- proxy availability ----------
+
+// server.js answers 400 when /proxy has no url. A static host (Vercel, GitHub Pages)
+// answers 404 instead, so the proxy option is switched off and explained.
+async function checkProxyAvailable() {
+  try {
+    const response = await fetch('/proxy');
+    if (response.status !== 404) return;
+  } catch {
+    // no server reachable: treat the proxy as missing
+  }
+
+  const checkbox = $('useProxy');
+  const label = checkbox.closest('label');
+  checkbox.checked = false;
+  checkbox.disabled = true;
+  label.classList.add('disabled');
+  label.title = 'Custom headers need the local proxy. Run server.js on your own computer.';
+  checkbox.nextSibling.textContent = ' Proxy unavailable here (run locally for headers)';
+}
+
 // ---------- start ----------
 
 restoreForm();
+checkProxyAvailable();
 initTheme($('theme'));
 initControls(video, player, box);
 enhanceSelects();

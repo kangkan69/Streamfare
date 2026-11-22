@@ -17,8 +17,8 @@
   --shadow: 0 14px 50px rgba(0, 0, 0, 0.55);
 
   /* dropdown glass: higher opacity = more solid, blur = how frosted it looks */
-  --glass-opacity: 90%;
-  --glass-blur: 30px;
+  --glass-opacity: 80%;
+  --glass-blur: 24px;
 
   /* motion: ease-out for entrances, spring for hover / press feedback */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -330,6 +330,7 @@ label {
   color: var(--muted);
 }
 label.check { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 12px; letter-spacing: 0; text-transform: none; }
+label.check.disabled { opacity: 0.6; cursor: not-allowed; }
 
 input[type="text"],
 select {
