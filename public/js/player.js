@@ -75,8 +75,21 @@ export class StreamPlayer {
 
     hls.on(Hls.Events.ERROR, (_, data) => {
       if (!data.fatal) return;
+
+      // The playlist itself failed: retrying will not help, so stop and explain.
+      const playlistFailed =
+        data.details === Hls.ErrorDetails.MANIFEST_LOAD_ERROR ||
+        data.details === Hls.ErrorDetails.MANIFEST_PARSING_ERROR;
+      if (playlistFailed) {
+        const code = data.response?.code;
+        this.destroy();
+        return this.onStatus('error', code
+          ? `Playlist refused (HTTP ${code}). Check Referer, Origin and the link's token.`
+          : 'Playlist blocked (CORS or network). Run locally with the proxy and set Referer/Origin.');
+      }
+
       this.onStatus('error', `Error: ${data.type} / ${data.details}`);
-      // try to recover before giving up
+      // other problems: try to recover before giving up
       if (data.type === Hls.ErrorTypes.NETWORK_ERROR) hls.startLoad();
       else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) hls.recoverMediaError();
     });
