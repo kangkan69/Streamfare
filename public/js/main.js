@@ -13,7 +13,10 @@ const FORM_FIELDS = ['url', ...HEADER_FIELDS];
 
 const sourcePanel = initCollapsible($('sourceCard'), $('sourceToggle'));
 const player = new StreamPlayer(video, {
-  onStatus: setStatus,
+  onStatus: (state, text) => {
+    setStatus(state, text);
+    if (state === 'error') box.classList.remove('busy');
+  },
   onQualities: fillQualityMenu,
 });
 
@@ -22,11 +25,12 @@ let collapseWhenPlaying = false;
 // ---------- form ----------
 
 function restoreForm() {
-  FORM_FIELDS.forEach((name) => ($(name).value = store.get(name)));
+  HEADER_FIELDS.forEach((name) => ($(name).value = store.get(name)));
+  store.remove('url'); // older versions saved the link; it is no longer kept
 }
 
 function saveForm() {
-  FORM_FIELDS.forEach((name) => store.set(name, $(name).value));
+  HEADER_FIELDS.forEach((name) => store.set(name, $(name).value));
 }
 
 function clearForm() {
