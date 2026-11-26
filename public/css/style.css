@@ -192,6 +192,12 @@ video {
   color-scheme: dark;
 }
 
+/* Chrome, Edge and Safari draw their own buffering spinner, so ours is hidden there
+   and only shows in browsers without one (Firefox). This avoids two spinners. */
+@supports selector(video::-webkit-media-controls) {
+  .spinner { display: none; }
+}
+
 /* white control icons (Chrome / Edge only) */
 video::-webkit-media-controls-play-button,
 video::-webkit-media-controls-mute-button,
